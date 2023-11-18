@@ -1,0 +1,1 @@
+export default ["die cut", "circle", "square", "rect", "bumper", "rounded", "oval"];

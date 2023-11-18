@@ -1,0 +1,27 @@
+{
+  "name": "backend-main",
+  "version": "1.0.0",
+  "description": "the main backend for sticky system",
+  "main": "server.js",
+  "scripts": {
+    "start:watch": "tsc --watch",
+    "start:dev": "nodemon dist/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.21",
+    "@types/mongoose": "^5.11.97",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^8.0.1",
+    "mongoose-timestamp": "^0.6.0",
+    "nodemon": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
+}
