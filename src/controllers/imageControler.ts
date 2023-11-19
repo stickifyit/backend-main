@@ -3,7 +3,6 @@
 import { Request, Response } from 'express';
 import { Storage } from '@google-cloud/storage';
 import config from '../config/googleCloudStorage';
-import { Multer } from 'multer';
 
 
 class ImageUpload {
@@ -20,7 +19,9 @@ class ImageUpload {
     });
 
     const bucket = storage.bucket(config.bucketName);
-    const blob = bucket.file(file.originalname);
+    const ID = Math.random().toString(36).substring(2, 15) +"-"+ Math.random().toString(36).substring(2, 15) +"-"+ Math.random().toString(36).substring(2, 15);
+    const fileName = `uploads/${ID}.png`;
+    const blob = bucket.file(fileName);
     const blobStream = blob.createWriteStream();
 
     blobStream.on('error', (err) => {
@@ -30,7 +31,7 @@ class ImageUpload {
 
     blobStream.on('finish', () => {
       console.log('Image uploaded to Google Cloud Storage.');
-      res.status(200).send('Image uploaded successfully.');
+      res.status(200).send({name:fileName});
     });
 
     blobStream.end(file.buffer);
