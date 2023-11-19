@@ -1,10 +1,32 @@
 import express, { Express, Request, Response } from 'express';
 import connectDB from './config/db';
-import userRoutes from './routes/userRoutes';
 import errorMiddleware from './middlewares/errorMiddleware';
+import userRoutes from './routes/userRoutes';
 import orderRoutes from './routes/orderRoutes';
+import imageRoutes from './routes/imageRoutes';
 
+import { Storage } from '@google-cloud/storage';
+
+import GCSConfig from "./config/googleCloudStorage"
+import cors from "cors"
+
+// creating the app
 const app: Express = express();
+
+// use cors
+app.use(cors())
+
+
+// Create a new instance of the Storage class with your configuration
+const storage = new Storage({
+  projectId: GCSConfig.projectId,
+  keyFilename: GCSConfig.keyFilename,
+});// 
+
+
+// Use the storage instance to interact with Google Cloud Storage
+const bucket = storage.bucket(GCSConfig.bucketName);
+
 
 // Connect to MongoDB
 connectDB();
@@ -15,7 +37,7 @@ app.use(express.json());
 // Routes
 app.use('/users', userRoutes);
 app.use('/orders', orderRoutes);
-
+app.use('/images',imageRoutes)
 // Error handling middleware
 app.use(errorMiddleware);
 // Default route
