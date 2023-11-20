@@ -42,6 +42,7 @@ app.use(express.json());
 app.use('/users', userRoutes);
 app.use('/orders', orderRoutes);
 app.use('/images',imageRoutes)
+
 // Error handling middleware
 app.use(errorMiddleware);
 // Default route

@@ -7,9 +7,15 @@ import axios from 'axios';
 import fs from "fs";
 import * as path from "path"
 import * as os from 'os';
+import { processOrderController } from '../controllers/processOrderController';
 const router: Router = express.Router();
 
 
+
+
+
+// Process order 
+router.post('/process', processOrderController)
 // Create an order
 router.post('/create', async (req: Request, res: Response) => {
     try {
@@ -48,45 +54,7 @@ router.post('/create', async (req: Request, res: Response) => {
       await order.save();
 
 
-
-      // lets create a sheet based on this order  
-
-      try {
-        // Get the image URL from the request body
-        const  imageUrl  = sticker.design;
-
-
-
-
-        // Fetch the image from the URL
-        const response = await axios.get(`https://storage.googleapis.com/stickify-storage/${imageUrl}`, { responseType: 'arraybuffer' });
     
-        // Process the image using sharp
-        const processedImageBuffer = await sharp(response.data)
-          // Your image processing operations here (e.g., resize, rotate, etc.)
-          .resize({ width: 3000, height: 3000 })
-          .png()
-          .toBuffer();
-    
-        // Save the processed image to the /uploads folder
-        const desktopPath = path.join(os.homedir(), 'Desktop','uploads');
-        const imagePath = path.join(desktopPath, 'processedImage.png');
-
-        if (!fs.existsSync(desktopPath)) {
-          fs.mkdirSync(desktopPath);
-        }
-
-        fs.writeFileSync(imagePath, processedImageBuffer);
-
-        console.log("image created")
-        
-      } catch (err){
-        console.log(err)
-      }
-
-
-
-
 
 
 
