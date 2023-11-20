@@ -10,7 +10,7 @@ const router: Router = express.Router();
 router.post('/create', async (req: Request, res: Response) => {
     try {
       const {
-        customerName,
+        customerId,
         serviceType,
         quantity,
         sticker,
@@ -31,7 +31,7 @@ router.post('/create', async (req: Request, res: Response) => {
   
       // Create an order
       const order = new Order({
-        customerName,
+        customerId,
         serviceType,
         quantity,
         sticker,

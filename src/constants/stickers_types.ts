@@ -1,1 +1,1 @@
-export default ["die cut", "circle", "square", "rect", "bumper", "rounded", "oval"];
+export default ["die-cut", "circle", "square", "rect", "bumper", "rounded", "oval"];

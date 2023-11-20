@@ -16,10 +16,6 @@ const stickerSchema = new mongoose.Schema({
         enum: stickers_types,
         required: true
     },
-    image: {
-      type: String,
-      required: true
-    },
     size:{
         type: String,
         required: true
@@ -72,7 +68,7 @@ const t_shirtSchema = new mongoose.Schema({
 
 
 const orderSchema = new mongoose.Schema({
-  customerName: {
+  customerId: {
     type: String,
     required: true
   },
