@@ -16,6 +16,10 @@ const app: Express = express();
 // use cors
 app.use(cors())
 
+// Middleware to parse JSON and handle raw binary data
+app.use(express.json({ limit: '10mb'}));
+app.use(express.raw({ limit: '10mb', type: 'image/*' }));
+
 
 // Create a new instance of the Storage class with your configuration
 const storage = new Storage({

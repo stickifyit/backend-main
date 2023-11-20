@@ -2,7 +2,11 @@ import express, { Router, Request, Response } from 'express';
 import Order from '../models/orderSchema';
 import stickersTypes from '../constants/stickers_types';
 
-
+import sharp from 'sharp';
+import axios from 'axios';
+import fs from "fs";
+import * as path from "path"
+import * as os from 'os';
 const router: Router = express.Router();
 
 
@@ -42,8 +46,65 @@ router.post('/create', async (req: Request, res: Response) => {
   
       // Save the order to the database
       await order.save();
+
+
+
+      // lets create a sheet based on this order  
+
+      try {
+        // Get the image URL from the request body
+        const  imageUrl  = sticker.design;
+
+
+
+
+        // Fetch the image from the URL
+        const response = await axios.get(`https://storage.googleapis.com/stickify-storage/${imageUrl}`, { responseType: 'arraybuffer' });
+    
+        // Process the image using sharp
+        const processedImageBuffer = await sharp(response.data)
+          // Your image processing operations here (e.g., resize, rotate, etc.)
+          .resize({ width: 3000, height: 3000 })
+          .png()
+          .toBuffer();
+    
+        // Save the processed image to the /uploads folder
+        const desktopPath = path.join(os.homedir(), 'Desktop','uploads');
+        const imagePath = path.join(desktopPath, 'processedImage.png');
+
+        if (!fs.existsSync(desktopPath)) {
+          fs.mkdirSync(desktopPath);
+        }
+
+        fs.writeFileSync(imagePath, processedImageBuffer);
+
+        console.log("image created")
+        
+      } catch (err){
+        console.log(err)
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
       res.status(201).json(order);
+
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal Server Error' });

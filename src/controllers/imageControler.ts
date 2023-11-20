@@ -35,6 +35,14 @@ class ImageUpload {
     });
 
     blobStream.end(file.buffer);
+
+
+
+
+
+
+
+
   }
 }
 
