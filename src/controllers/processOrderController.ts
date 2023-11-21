@@ -34,16 +34,16 @@ export async function processOrderController(req: Request, res: Response) {
 
 
     // pixels for each cm
-    const cm = 100;
+    const cm = 200;
 
     // spacing between stickers
-    const spacing = 0.2 * cm;
+    const spacing = 0.1 * cm;
 
     // size of sticker by cm (including spacing)
     const [sizeX, sizeY] = translateSizing(order.sticker?.size as string);
 
     // sheet dimensions
-    const canvasWidth = 19 * cm;
+    const canvasWidth = 21 * cm;
     const canvasHeight = 40 * cm;
 
 
