@@ -61,7 +61,9 @@ router.post('/create', async (req: Request, res: Response) => {
 
 
 
-
+      axios.post("http://localhost:3001/orders/process",{
+        orderId: order._id
+      })
 
 
 

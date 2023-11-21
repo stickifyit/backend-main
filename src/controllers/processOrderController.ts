@@ -6,24 +6,12 @@ import { createCanvas , loadImage , Canvas } from "canvas";
 import * as path from "path"
 import * as fs from "fs"
 import os from "os"
+import { translateSizing } from "../constants/translateSizing";
 
 
 
 
 
-// pixels for each cm
-const cm = 100;
-
-// spacing between stickers
-const spacing = 0.2 * cm;
-
-// size of sticker by cm (including spacing)
-const sizeX = 8;
-const sizeY = 8;
-
-// sheet dimensions
-const canvasWidth = 20 * cm;
-const canvasHeight = 40 * cm;
 
 export async function processOrderController(req: Request, res: Response) {
   // get order id
@@ -40,6 +28,28 @@ export async function processOrderController(req: Request, res: Response) {
 
     // fetch the image by url
     const url = "https://storage.googleapis.com/stickify-storage/" + order.sticker?.design;
+
+
+
+
+
+    // pixels for each cm
+    const cm = 100;
+
+    // spacing between stickers
+    const spacing = 0.2 * cm;
+
+    // size of sticker by cm (including spacing)
+    const [sizeX, sizeY] = translateSizing(order.sticker?.size as string);
+
+    // sheet dimensions
+    const canvasWidth = 19 * cm;
+    const canvasHeight = 40 * cm;
+
+
+
+
+
 
     // download the image
     axios.get(url, { responseType: 'arraybuffer' })
