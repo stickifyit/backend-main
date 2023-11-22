@@ -12,7 +12,7 @@ router.get('/current',async (req, res) => {
         }
         return res.status(200).json(current)
     }catch(err){
-        return res.status(500).json({message: err})   lo
+        return res.status(500).json({message: err})
     }
 })
 
