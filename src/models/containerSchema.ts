@@ -10,6 +10,9 @@ const containerSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    sheetsIds : {
+        type: [mongoose.Schema.Types.ObjectId],
+    },
     state : {
         type: String,
         enum: ['filling', 'ready','printed','delivering','delivered'],

@@ -4,6 +4,7 @@ import errorMiddleware from './middlewares/errorMiddleware';
 import userRoutes from './routes/userRoutes';
 import orderRoutes from './routes/orderRoutes';
 import imageRoutes from './routes/imageRoutes';
+import containerRoutes from './routes/containerRoutes';
 
 import { Storage } from '@google-cloud/storage';
 
@@ -42,6 +43,7 @@ app.use(express.json());
 app.use('/users', userRoutes);
 app.use('/orders', orderRoutes);
 app.use('/images',imageRoutes)
+app.use('/containers',containerRoutes)
 
 // Error handling middleware
 app.use(errorMiddleware);

@@ -12,7 +12,10 @@ import "dotenv/config"
 import config from '../config/googleCloudStorage';
 
 
-
+function truncateDecimal(number:number, decimalPlaces:number) {
+  const factor = 10 ** decimalPlaces;
+  return Math.trunc(number * factor) / factor;
+}
 
 export async function processOrderController(req: Request, res: Response) {
   // get order id
@@ -46,6 +49,7 @@ export async function processOrderController(req: Request, res: Response) {
     // sheet dimensions
     const canvasWidth = 21 * cm;
     const canvasHeight = 40 * cm;
+    const ceil = 0;
 
 
 
@@ -57,7 +61,7 @@ export async function processOrderController(req: Request, res: Response) {
       .then((response) => {
         // Use sharp to resize the image and save it directly
         return sharp(Buffer.from(response.data))
-          .resize(sizeX * cm - (spacing * 2), sizeY * cm - (spacing * 2)) // Adjust the dimensions as needed
+          .resize(truncateDecimal(sizeX * cm - (spacing * 2),ceil), truncateDecimal(sizeY * cm - (spacing * 2),ceil)) // Adjust the dimensions as needed
           .toBuffer();
       })
       .then(async (resizedBuffer) => {
@@ -67,7 +71,7 @@ export async function processOrderController(req: Request, res: Response) {
             width: canvasWidth,
             height: canvasHeight,
             channels: 4,
-            background: { r: 255, g: 255, b: 255, alpha: 0.3 },
+            background: { r: 0, g: 0, b: 0, alpha: 0 },
           },
         }).png();
 
@@ -91,8 +95,8 @@ export async function processOrderController(req: Request, res: Response) {
           for (let col = 0; col < gridSize.columns; col++) {
             stickers.push({
               input: resizedBuffer,
-              top: row * cellHeight+spacing+marginY,
-              left: col * cellWidth+spacing+marginX,
+              top: truncateDecimal(row * cellHeight+spacing+marginY,ceil),
+              left: truncateDecimal(col * cellWidth+spacing+marginX,ceil),
               blend: 'over' as sharp.Blend // Use sharp.Blend for TypeScript
             });
           }

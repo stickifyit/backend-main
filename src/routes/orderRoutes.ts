@@ -70,14 +70,15 @@ router.post('/create', async (req: Request, res: Response) => {
             if (myContainer !== null) {
                 sheet.container = myContainer?._id;
                 sheet.snapshot = String(sheet._id);
-                // make sheets of container ++
-                await Container.findByIdAndUpdate(myContainer._id, { $inc: { sheets: 1 } });
+                // make sheets of container ++ , and add snapshot to sheetsId
+                await Container.findByIdAndUpdate(myContainer._id, { $inc: { sheets: 1 } , $push: { sheetsIds: sheet._id } });
                 if(myContainer.sheets === 3){
                     await Container.findByIdAndUpdate(myContainer._id, { $set: { state: "ready", isOpen: "closed" } });
                 }
             } else {
                 const container = new Container();
                 container.sheets = 1;
+                container.sheetsIds = [sheet._id];
                 sheet.container = container._id;
                 sheet.snapshot = String(sheet._id);
                 await container.save();
