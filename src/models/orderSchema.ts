@@ -22,47 +22,8 @@ const stickerSchema = new mongoose.Schema({
     }
 });
 
-const labelSchema = new mongoose.Schema({
-    quantity: {
-      type: Number,
-      required: true
-    },
-    material: {
-      type: String,
-      required: true
-    }
-});
+
   
-const cupSchema = new mongoose.Schema({
-    quantity: {
-      type: Number,
-      required: true
-    },
-    size: {
-      type: String,
-      required: true
-    }
-});
-  
-const t_shirtSchema = new mongoose.Schema({
-    quantity: {
-      type: Number,
-      required: true
-    },
-    size: {
-      type: String,
-      required: true
-    },
-    color: {
-      type: String,
-      required: true
-    }
-});
-
-
-
-
-
 
 
 
@@ -72,19 +33,33 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  serviceType: {
+
+  number: {
     type: String,
-    enum: ['sticker', 'label', 'cup', 't_shirt'],
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
+  fullName: {
+    type: String,
+    required: true
+  },
+  address: {
+    type: String,
     required: true
   },
   quantity: {
     type: Number,
     required: true
   },
+  serviceType: {
+    type: String,
+    enum: ['sticker', 'label', 'cup', 't_shirt'],
+    required: true
+  },
   sticker: stickerSchema,
-  label: labelSchema,
-  cup: cupSchema,
-  t_shirt: t_shirtSchema
   // Properties specific to each service type
 }, {
     timestamps: true

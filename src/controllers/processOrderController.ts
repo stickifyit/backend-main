@@ -34,7 +34,7 @@ export async function processOrderController(req: Request, res: Response) {
 
 
     // pixels for each cm
-    const cm = 200;
+    const cm = 20;
 
     // spacing between stickers
     const spacing = 0.1 * cm;

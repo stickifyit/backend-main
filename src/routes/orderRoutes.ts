@@ -8,6 +8,9 @@ import fs from "fs";
 import * as path from "path"
 import * as os from 'os';
 import { processOrderController } from '../controllers/processOrderController';
+import Sheet from '../models/sheetSchema';
+import Container from '../models/containerSchema';
+import { Document } from 'mongoose';
 const router: Router = express.Router();
 
 
@@ -41,18 +44,42 @@ router.post('/create', async (req: Request, res: Response) => {
   
       // Create an order
       const order = new Order({
-        customerId,
-        serviceType,
-        quantity,
-        sticker,
-        label,
-        cup,
-        t_shirt,
+        ...req.body
       });
   
       // Save the order to the database
       await order.save();
 
+
+      // looping the container and make sheets
+
+      for (let i = 0; i < quantity; i++) {
+        const sheet = new Sheet();
+        sheet.order = order._id;
+        sheet.stickerUrl = sticker.design;
+        sheet.size = sticker.size;
+        sheet.type = sticker.type;
+
+
+
+        const myContainer =await Container.findOne({ isOpen: "open",state:"filling" }).exec();
+
+        if (myContainer !== null) {
+            sheet.container = myContainer?._id;
+            // make sheets of container ++
+            await Container.findByIdAndUpdate(myContainer._id, { $inc: { sheets: 1 } });
+            if(myContainer.sheets === 3){
+                await Container.findByIdAndUpdate(myContainer._id, { $set: { state: "ready", isOpen: "closed" } });
+            }
+        } else {
+            const container = new Container();
+            container.sheets = 1;
+            sheet.container = container._id;
+            await container.save();
+        }
+
+        await sheet.save();
+      }
 
     
 
