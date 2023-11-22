@@ -42,6 +42,8 @@ router.post('/create', async (req: Request, res: Response) => {
         return res.status(400).json({ message: 'Invalid sticker type' });
       }
   
+
+
       // Create an order
       const order = new Order({
         ...req.body
@@ -51,34 +53,45 @@ router.post('/create', async (req: Request, res: Response) => {
       await order.save();
 
 
+
       // looping the container and make sheets
 
       for (let i = 0; i < quantity; i++) {
-        const sheet = new Sheet();
-        sheet.order = order._id;
-        sheet.stickerUrl = sticker.design;
-        sheet.size = sticker.size;
-        sheet.type = sticker.type;
 
+        try {
 
+            const sheet = new Sheet();
+            sheet.order = order._id;
+            sheet.stickerUrl = sticker.design;
+            sheet.size = sticker.size;
+            sheet.type = sticker.type;
+            const myContainer =await Container.findOne({ isOpen: "open",state:"filling" }).exec();
 
-        const myContainer =await Container.findOne({ isOpen: "open",state:"filling" }).exec();
-
-        if (myContainer !== null) {
-            sheet.container = myContainer?._id;
-            // make sheets of container ++
-            await Container.findByIdAndUpdate(myContainer._id, { $inc: { sheets: 1 } });
-            if(myContainer.sheets === 3){
-                await Container.findByIdAndUpdate(myContainer._id, { $set: { state: "ready", isOpen: "closed" } });
+            if (myContainer !== null) {
+                sheet.container = myContainer?._id;
+                sheet.snapshot = String(sheet._id);
+                // make sheets of container ++
+                await Container.findByIdAndUpdate(myContainer._id, { $inc: { sheets: 1 } });
+                if(myContainer.sheets === 3){
+                    await Container.findByIdAndUpdate(myContainer._id, { $set: { state: "ready", isOpen: "closed" } });
+                }
+            } else {
+                const container = new Container();
+                container.sheets = 1;
+                sheet.container = container._id;
+                sheet.snapshot = String(sheet._id);
+                await container.save();
             }
-        } else {
-            const container = new Container();
-            container.sheets = 1;
-            sheet.container = container._id;
-            await container.save();
-        }
 
-        await sheet.save();
+
+            // upload a snapshot of the sheet
+            await axios.post("http://localhost:3001/orders/process",{
+              orderId:order._id,
+              sheetId:sheet._id
+            })
+            await sheet.save();
+
+        } catch (error) {console.log(error)}
       }
 
     
@@ -88,19 +101,9 @@ router.post('/create', async (req: Request, res: Response) => {
 
 
 
-      axios.post("http://localhost:3001/orders/process",{
-        orderId: order._id
-      })
-
-
-
-
-
-
-
-
   
-      res.status(201).json(order);
+          res.status(201).json(order);
+
 
     } catch (error) {
       console.error(error);

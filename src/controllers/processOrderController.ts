@@ -7,8 +7,9 @@ import * as path from "path"
 import * as fs from "fs"
 import os from "os"
 import { translateSizing } from "../constants/translateSizing";
-
-
+import { Storage } from "@google-cloud/storage";
+import "dotenv/config"
+import config from '../config/googleCloudStorage';
 
 
 
@@ -34,7 +35,7 @@ export async function processOrderController(req: Request, res: Response) {
 
 
     // pixels for each cm
-    const cm = 20;
+    const cm = 30;
 
     // spacing between stickers
     const spacing = 0.1 * cm;
@@ -107,11 +108,57 @@ export async function processOrderController(req: Request, res: Response) {
           rows: Math.floor(canvasHeight / (sizeY * cm)),
         };
 
-        const desktopPath = path.join(os.homedir(), 'Desktop')
-        const outputFilePath = path.join(desktopPath,`stickify/${sizeX}x${sizeY} - (${gridSize.rows*gridSize.columns} sticker).png`)
 
-        fs.writeFileSync(outputFilePath, canvasBuffer);
-        console.log('Image saved to:', outputFilePath);
+
+        if(false ){
+
+          const desktopPath = path.join(os.homedir(), 'Desktop')
+          const outputFilePath = path.join(desktopPath,`stickify/${sizeX}x${sizeY} - (${gridSize.rows*gridSize.columns} sticker).png`)
+
+          fs.writeFileSync(outputFilePath, canvasBuffer);
+          console.log('Image saved to:', outputFilePath);
+
+
+        }else{
+
+          const storage = new Storage({
+            projectId: config.projectId,
+            keyFilename: config.keyFilename,
+          });
+         
+          try {
+
+          const bucket = storage.bucket(config.bucketName);
+          const ID = String(req.body.sheetId);
+          const fileName = `sheetsSnapshots/${ID}.png`;
+          const blob = bucket.file(fileName);
+          
+          
+          blob.createWriteStream({
+            resumable: false, // You can set resumable to true if you want to enable resumable uploads
+            metadata: {
+              contentType: 'image/png', // Set the content type accordingly
+            },
+          })
+            .on('error', (err) => {
+              console.error('Error uploading to Google Cloud Storage:', err);
+              res.status(500).send('Internal Server Error');
+            })
+            .on('finish', () => {
+              console.log('sheet uploaded to Google Cloud Storage.');
+            })
+            .end(canvasBuffer);
+
+
+
+
+          }catch(e){
+            console.log(e)
+          }
+        }
+
+
+
       })
       .catch((error) => console.error('Error:', error));
 

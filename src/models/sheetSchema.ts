@@ -10,6 +10,10 @@ const sheetSchema = new mongoose.Schema({
     ref: 'Order', // Reference to the Order model
     required: true
   },
+  snapshot:{
+    type: String,
+    required: true
+  },
   stickerUrl: {
     type: String,
     required: true
