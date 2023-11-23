@@ -5,11 +5,13 @@ import userRoutes from './routes/userRoutes';
 import orderRoutes from './routes/orderRoutes';
 import imageRoutes from './routes/imageRoutes';
 import containerRoutes from './routes/containerRoutes';
-
+import http from "http";
 import { Storage } from '@google-cloud/storage';
 
 import GCSConfig from "./config/googleCloudStorage"
 import cors from "cors"
+
+import {Server} from "socket.io"
 
 // creating the app
 const app: Express = express();
@@ -52,4 +54,15 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello, TypeScript Express Server!');
 });
 
-export default app;
+
+
+// io server
+const server = http.createServer(app)
+const io = new Server(server,{
+  cors:{
+    origin:"*", // this will allow the front and and the admin at once
+    methods:["GET","POST"],
+  }
+})
+
+export default server;
