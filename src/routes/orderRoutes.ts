@@ -11,6 +11,7 @@ import { processOrderController } from '../controllers/processOrderController';
 import Sheet from '../models/sheetSchema';
 import Container from '../models/containerSchema';
 import { Document } from 'mongoose';
+import { io } from '../app';
 const router: Router = express.Router();
 
 
@@ -86,6 +87,7 @@ router.post('/create', async (req: Request, res: Response) => {
                 setTimeout(async() => {
                   await Container.findByIdAndUpdate(containerId, { $set: { isOpen: "closed", state: "ready" } });
                   console.log("container closed");
+                  io.emit("container closed");
                 },1000*60*1)
                 await container.save();
             }

@@ -58,11 +58,21 @@ app.get('/', (req: Request, res: Response) => {
 
 // io server
 const server = http.createServer(app)
-const io = new Server(server,{
+export const io = new Server(server,{
   cors:{
     origin:"*", // this will allow the front and and the admin at once
     methods:["GET","POST"],
   }
 })
-
+// listen io events
+io.on("connection",(socket)=>{
+  console.log("a user connected")
+  socket.on("add order",(data)=>{
+    socket.broadcast.emit("add order",data)
+    console.log("order added")
+  })
+  socket.on("disconnect",()=>{
+    console.log("user disconnected")
+  })
+})
 export default server;
