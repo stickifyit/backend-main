@@ -79,8 +79,14 @@ router.post('/create', async (req: Request, res: Response) => {
                 const container = new Container();
                 container.sheets = 1;
                 container.sheetsIds = [sheet._id];
+                container.serverTime = new Date();
                 sheet.container = container._id;
                 sheet.snapshot = String(sheet._id);
+                const containerId = container._id;
+                setTimeout(async() => {
+                  await Container.findByIdAndUpdate(containerId, { $set: { isOpen: "closed", state: "ready" } });
+                  console.log("container closed");
+                },1000*60*1)
                 await container.save();
             }
 
