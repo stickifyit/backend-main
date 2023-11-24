@@ -16,7 +16,15 @@ const router: Router = express.Router();
 
 
 
-
+// get orders 
+router.get('/all', async (req: Request, res: Response) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 }).limit(12);
+    return res.status(200).json(orders);
+  } catch (err) {
+    return res.status(500).json({ message: err });
+  }
+})
 
 // Process order 
 router.post('/process', processOrderController)
@@ -34,7 +42,7 @@ router.post('/create', async (req: Request, res: Response) => {
       } = req.body;
   
       // Validate serviceType
-      if (!['sticker', 'label', 'cup', 't_shirt'].includes(serviceType)) {
+      if (!['sticker', 'label', 'cup', 't-shirt'].includes(serviceType)) {
         return res.status(400).json({ message: 'Invalid serviceType' });
       }
   
@@ -55,8 +63,8 @@ router.post('/create', async (req: Request, res: Response) => {
 
 
 
+    if(serviceType === "sticker"){
       // looping the container and make sheets
-
       for (let i = 0; i < quantity; i++) {
 
         try {
@@ -106,6 +114,8 @@ router.post('/create', async (req: Request, res: Response) => {
             await sheet.save();
 
         } catch (error) {console.log(error)}
+      }
+
       }
 
     

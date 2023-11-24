@@ -23,7 +23,21 @@ const stickerSchema = new mongoose.Schema({
 });
 
 
-  
+const t_shirtSchema = new mongoose.Schema({
+    design: {
+      type: String,
+      required: true
+    },
+    type: {
+        type:String,
+        enum: ["center-chest","left-chest","back-side"],
+        required: true
+    },
+    size:{
+        type: String,
+        required: true
+    }
+})  
 
 
 
@@ -56,10 +70,11 @@ const orderSchema = new mongoose.Schema({
   },
   serviceType: {
     type: String,
-    enum: ['sticker', 'label', 'cup', 't_shirt'],
+    enum: ['sticker', 'label', 'cup', 't-shirt'],
     required: true
   },
   sticker: stickerSchema,
+  "t-shirt": t_shirtSchema,
   // Properties specific to each service type
 }, {
     timestamps: true
