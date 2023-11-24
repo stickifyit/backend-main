@@ -85,6 +85,11 @@ router.post('/create', async (req: Request, res: Response) => {
                 sheet.snapshot = String(sheet._id);
                 const containerId = container._id;
                 setTimeout(async() => {
+                  const getC = await Container.findById(containerId);
+                  // we get the container to see if it is ready already or not
+                  if(getC?.state === "ready"){
+                    return;
+                  }
                   await Container.findByIdAndUpdate(containerId, { $set: { isOpen: "closed", state: "ready" } });
                   console.log("container closed");
                   io.emit("container closed");
