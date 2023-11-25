@@ -15,8 +15,8 @@ export const createSticker = async (req: Request, res: Response) => {
 // get stickers based on category
 export const getStickers = async (req: Request, res: Response) => {
   try {
-    const { category } = req.body;
-    const stickers = await StickerModel.find({ category }).sort({ createdAt: -1 }).limit(30);
+    const { pack } = req.body;
+    const stickers = await StickerModel.find({ pack }).sort({ createdAt: -1 }).limit(30);
     res.json(stickers);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });

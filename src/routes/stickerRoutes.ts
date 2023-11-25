@@ -6,5 +6,5 @@ const router = express.Router();
 router.post('/create', createSticker);
 router.put('/update/:id', updateSticker);
 router.delete('/delete/:id', deleteSticker);
-router.post('/get-by-category', getStickers)
+router.post('/get-by-pack', getStickers)
 export default router;
