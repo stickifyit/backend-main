@@ -9,7 +9,6 @@ const stickerSchema = new mongoose.Schema({
   imageURL: {
     type: String,
     required: true,
-    trim: true,
   },
   keywords:{
     type: [String],
@@ -25,17 +24,11 @@ const stickerSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    required: true,
+    // required: true,
     trim: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
+}, {
+  timestamps: true
 });
 
 const Sticker = mongoose.model('Sticker', stickerSchema);

@@ -10,6 +10,7 @@ import orderRoutes from './routes/orderRoutes';
 import imageRoutes from './routes/imageRoutes';
 import containerRoutes from './routes/containerRoutes';
 import stickerRoutes from './routes/stickerRoutes';
+import packRoutes from './routes/packRoutes'
 
 
 
@@ -55,6 +56,7 @@ app.use('/orders', orderRoutes);
 app.use('/images',imageRoutes)
 app.use('/containers',containerRoutes)
 app.use('/sticker', stickerRoutes);
+app.use('/packs', packRoutes);
 
 // Error handling middleware
 app.use(errorMiddleware);
