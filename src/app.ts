@@ -1,10 +1,18 @@
 import express, { Express, Request, Response } from 'express';
 import connectDB from './config/db';
 import errorMiddleware from './middlewares/errorMiddleware';
+
+
+
+// routes
 import userRoutes from './routes/userRoutes';
 import orderRoutes from './routes/orderRoutes';
 import imageRoutes from './routes/imageRoutes';
 import containerRoutes from './routes/containerRoutes';
+import stickerRoutes from './routes/stickerRoutes';
+
+
+
 import http from "http";
 import { Storage } from '@google-cloud/storage';
 
@@ -46,6 +54,7 @@ app.use('/users', userRoutes);
 app.use('/orders', orderRoutes);
 app.use('/images',imageRoutes)
 app.use('/containers',containerRoutes)
+app.use('/sticker', stickerRoutes);
 
 // Error handling middleware
 app.use(errorMiddleware);
