@@ -3,8 +3,9 @@ import StickerModel from '../models/stickerSchema';
 
 export const createSticker = async (req: Request, res: Response) => {
   try {
-    const { name, imageURL, description, category , keywords } = req.body;
-    const newSticker = new StickerModel({ name, imageURL, description, category, keywords });
+    const { name, imageURL, description, category , keywords,pack } = req.body;
+    console.log(req.body)
+    const newSticker = new StickerModel({ name, imageURL,pack, description, category, keywords });
     const savedSticker = await newSticker.save();
     res.status(201).json(savedSticker);
   } catch (error) {

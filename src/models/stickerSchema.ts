@@ -18,6 +18,11 @@ const stickerSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  pack: {
+    type: String,
+    required: true,
+    trim: true,
+  },
   category: {
     type: String,
     required: true,

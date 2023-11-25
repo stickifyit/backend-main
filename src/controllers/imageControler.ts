@@ -8,6 +8,10 @@ import config from '../config/googleCloudStorage';
 class ImageUpload {
   static uploadImage(req: any, res: Response) {
     const file = req?.file;
+    var { folder } = req?.body;
+    if(!folder) {
+      folder = "uploads";
+    }
 
     if (!file) {
       return res.status(400).send('No file uploaded.');
@@ -17,10 +21,10 @@ class ImageUpload {
       projectId: config.projectId,
       keyFilename: config.keyFilename,
     });
-
+    try{
     const bucket = storage.bucket(config.bucketName);
     const ID = Math.random().toString(36).substring(2, 15) +"-"+ Math.random().toString(36).substring(2, 15) +"-"+ Math.random().toString(36).substring(2, 15);
-    const fileName = `uploads/${ID}.png`;
+    const fileName = `${folder}/${ID}.png`;
     const blob = bucket.file(fileName);
     const blobStream = blob.createWriteStream();
 
@@ -37,6 +41,9 @@ class ImageUpload {
     blobStream.end(file.buffer);
 
 
+    }catch(error){
+      console.log(error);
+    }
 
 
 
