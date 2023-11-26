@@ -49,6 +49,11 @@ connectDB();
 
 // Middleware
 app.use(express.json());
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // Replace '*' with the specific origin allowed if possible
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 
 // Routes
 app.use('/users', userRoutes);
@@ -57,6 +62,19 @@ app.use('/images',imageRoutes)
 app.use('/containers',containerRoutes)
 app.use('/sticker', stickerRoutes);
 app.use('/packs', packRoutes);
+app.post('/fetch-image', async (req: Request, res: Response) => {
+  const url = req.body.url
+  try {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    const buffer = await blob.arrayBuffer();
+    const base64 = Buffer.from(buffer).toString('base64');
+    res.send(`data:${response.headers.get('content-type') || 'image/png'};base64,${base64}`);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+})
 
 // Error handling middleware
 app.use(errorMiddleware);
