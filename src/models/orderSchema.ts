@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 
 
 const customSheet = new mongoose.Schema({
-  type: { type: "custom sheet", required: true},
+  type: { type: String ,default: "custom sheet", required: true},
   quantity : { type: Number, required: true},
   image : { type: String, required: true},
   items: {
@@ -18,7 +18,6 @@ const customSheet = new mongoose.Schema({
         height: { type: String, required: true },
         image: { type: String, required: true },
         id: { type: String, required: true },
-        size: { type: Number, required: true },
       }
     ],
     required: true
