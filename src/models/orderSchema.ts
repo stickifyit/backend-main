@@ -10,7 +10,7 @@ const customSheet = new mongoose.Schema({
   type: { type: String ,default: "custom sheet", required: true},
   quantity : { type: Number, required: true},
   image : { type: String, required: true},
-  sheetId : { type: String, required: true}, 
+  sheetsId : { type: [String], required: true}, 
 })  
 
 
@@ -64,14 +64,15 @@ const orderSchema = new mongoose.Schema({
   },
   state: {
     type: String,
-    enum: ["pending", "waiting","printed","packed", "delivered", "canceled"],
-    default: "pending",
+    enum: ["new", "pending","printed","packed", "delivered", "canceled"],
+    default: "new",
   },
   cart:{
     type: [customSheet],
     required: true
   }
 }, {
+  
     timestamps: true
 });
 

@@ -11,6 +11,7 @@ import imageRoutes from './routes/imageRoutes';
 import containerRoutes from './routes/containerRoutes';
 import stickerRoutes from './routes/stickerRoutes';
 import packRoutes from './routes/packRoutes'
+import customSheetRoutes from './routes/customSheetroutes'
 
 
 
@@ -62,6 +63,7 @@ app.use('/images',imageRoutes)
 app.use('/containers',containerRoutes)
 app.use('/sticker', stickerRoutes);
 app.use('/packs', packRoutes);
+app.use('/custom-sheet',customSheetRoutes);
 app.post('/fetch-image', async (req: Request, res: Response) => {
   const url = req.body.url
   try {
