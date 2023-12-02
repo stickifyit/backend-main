@@ -32,7 +32,10 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-
+  closed: {
+    type: Boolean,
+    required: false
+  },
   number: {
     type: String,
     required: true
@@ -52,6 +55,11 @@ const orderSchema = new mongoose.Schema({
   quantity: {
     type: Number,
     required: true
+  },
+  state: {
+    type: String,
+    enum: ["pending", "waiting","printed","packed", "delivered", "canceled"],
+    default: "pending",
   },
   cart:{
     type: [customSheet],
