@@ -11,6 +11,7 @@ import Sheet from '../models/sheetSchema';
 import Container from '../models/containerSchema';
 import { Document } from 'mongoose';
 import { io } from '../app';
+import { createOrder } from '../controllers/processOrderController';
 const router: Router = express.Router();
 
 
@@ -27,7 +28,7 @@ router.get('/all', async (req: Request, res: Response) => {
 
 // Process order 
 // Create an order
-router.post("/create", )
+router.post("/create",createOrder)
 
 
   export default router;
