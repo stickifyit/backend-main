@@ -10,20 +10,25 @@ const customSheet = new mongoose.Schema({
   type: { type: String ,default: "custom sheet", required: true},
   quantity : { type: Number, required: true},
   image : { type: String, required: true},
-  items: {
-    type: [{
-        x: { type: Number, required: true },
-        y: { type: Number, required: true },
-        width: { type: String, required: true },
-        height: { type: String, required: true },
-        image: { type: String, required: true },
-        id: { type: String, required: true },
-      }
-    ],
-    required: true
-  }
+  sheetId : { type: String, required: true}, 
 })  
 
+
+
+
+
+  // items: {
+  //   type: [{
+  //       x: { type: Number, required: true },
+  //       y: { type: Number, required: true },
+  //       width: { type: String, required: true },
+  //       height: { type: String, required: true },
+  //       image: { type: String, required: true },
+  //       id: { type: String, required: true },
+  //     }
+  //   ],
+  //   required: true
+  // }
 
 
 
