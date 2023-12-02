@@ -35,6 +35,7 @@ class ImageUpload {
 
     blobStream.on('finish', () => {
       console.log('Image uploaded to Google Cloud Storage.');
+      console.log(fileName)
       res.status(200).send({name:fileName});
     });
 

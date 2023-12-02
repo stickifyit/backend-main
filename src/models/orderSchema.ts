@@ -1,42 +1,27 @@
 import stickers_types from "../constants/stickers_types";
-
 import mongoose from "mongoose";
 
 
 
 
-// Define schema for each service
-const stickerSchema = new mongoose.Schema({
-    design: {
-      type: String,
-      required: true
-    },
-    type: {
-        type:String,
-        enum: stickers_types,
-        required: true
-    },
-    size:{
-        type: String,
-        required: true
-    }
-});
 
 
-const t_shirtSchema = new mongoose.Schema({
-    design: {
-      type: String,
-      required: true
-    },
-    type: {
-        type:String,
-        enum: ["center-chest","left-chest","back-side"],
-        required: true
-    },
-    size:{
-        type: String,
-        required: true
-    }
+const customSheet = new mongoose.Schema({
+  quantity : { type: Number, required: true},
+  image : { type: String, required: true},
+  items: {
+    type: [{
+        x: { type: Number, required: true },
+        y: { type: Number, required: true },
+        width: { type: String, required: true },
+        height: { type: String, required: true },
+        image: { type: String, required: true },
+        id: { type: String, required: true },
+        size: { type: Number, required: true },
+      }
+    ],
+    required: true
+  }
 })  
 
 
@@ -68,14 +53,10 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  serviceType: {
-    type: String,
-    enum: ['sticker', 'label', 'cup', 't-shirt'],
+  cart:{
+    type: [customSheet],
     required: true
-  },
-  sticker: stickerSchema,
-  "t-shirt": t_shirtSchema,
-  // Properties specific to each service type
+  }
 }, {
     timestamps: true
 });
