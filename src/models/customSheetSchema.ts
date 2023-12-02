@@ -9,7 +9,7 @@ const customSheetSchema = new mongoose.Schema({
     state : {
         type: String,
         enum: ["new", "pending","printed"],
-        required: true,
+        default: "new",
     },
     items:{
         type: [{
@@ -18,7 +18,6 @@ const customSheetSchema = new mongoose.Schema({
             width: { type: String, required: true },
             height: { type: String, required: true },
             image: { type: String, required: true },
-            id: { type: String, required: true },
         }],
         required: true
     }

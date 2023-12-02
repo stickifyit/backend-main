@@ -8,12 +8,13 @@ const router:Router = express.Router();
 
 router.post("/create", async (req: Request, res: Response) => {
     try{
-        const { orderId, state, items } = req.body;
-        const newCustomSheet = new CustomSheet({ orderId, state, items });
+        const { orderId, items } = req.body;
+        const newCustomSheet = new CustomSheet({ orderId, items });
         const savedCustomSheet = await newCustomSheet.save();
         res.status(201).json(savedCustomSheet);
     }catch(err){
         res.status(500).json({message: err});
+        console.log(err)
     }
 })
 
