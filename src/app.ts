@@ -12,6 +12,7 @@ import containerRoutes from './routes/containerRoutes';
 import stickerRoutes from './routes/stickerRoutes';
 import packRoutes from './routes/packRoutes'
 import customSheetRoutes from './routes/customSheetroutes'
+import stickerSheetRoutes from './routes/stickerSheetRoutes'
 
 
 
@@ -64,6 +65,11 @@ app.use('/containers',containerRoutes)
 app.use('/sticker', stickerRoutes);
 app.use('/packs', packRoutes);
 app.use('/custom-sheet',customSheetRoutes);
+app.use("/sticker-sheet",stickerSheetRoutes)
+
+
+
+
 app.post('/fetch-image', async (req: Request, res: Response) => {
   const url = req.body.url
   try {
