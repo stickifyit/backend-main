@@ -1,11 +1,6 @@
 import mongoose from "mongoose"
 
 const containerSchema = new mongoose.Schema({
-    isOpen : {
-        type: String,
-        enum: ['open', 'closed'],
-        default: 'open'
-    },
     sheets : {
         type: Number,
         default: 0
