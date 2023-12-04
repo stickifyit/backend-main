@@ -13,6 +13,7 @@ import stickerRoutes from './routes/stickerRoutes';
 import packRoutes from './routes/packRoutes'
 import customSheetRoutes from './routes/customSheetroutes'
 import stickerSheetRoutes from './routes/stickerSheetRoutes'
+import orderItemRoutes from './routes/orderItemRoutes'
 
 
 
@@ -66,6 +67,7 @@ app.use('/sticker', stickerRoutes);
 app.use('/packs', packRoutes);
 app.use('/custom-sheet',customSheetRoutes);
 app.use("/sticker-sheet",stickerSheetRoutes)
+app.use('/order-items',orderItemRoutes)
 
 
 
