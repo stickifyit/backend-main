@@ -15,7 +15,9 @@ const containerSchema = new mongoose.Schema({
         default: Date.now
     },
     sheetsIds : {
+        // ref
         type: [mongoose.Schema.Types.ObjectId],
+        ref: 'OrderItem',
     },
     state : {
         type: String,
