@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get('/current',async (req, res) => {
     try{
-        const current = await Container.findOne({isOpen: 'open'})
+        const current = await Container.findOne({state: 'filling'}).populate("sheetsIds")
         if(!current){
             return res.status(200).json(null)
         }
