@@ -16,7 +16,7 @@ const containerSchema = new mongoose.Schema({
     },
     state : {
         type: String,
-        enum: ['filling', 'ready','printed','delivering','delivered'],
+        enum: ['filling', 'ready','printed'],
         default: 'filling'
     }
 },{

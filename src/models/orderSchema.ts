@@ -60,8 +60,8 @@ const orderSchema = new mongoose.Schema({
   },
   state: {
     type: String,
-    enum: ["new", "pending","printed","packed", "delivered", "canceled"],
-    default: "new",
+    enum: ["pending","confirmed","printed","packed", "delivered", "canceled"],
+    default: "pending",
   },
   cart:{
     type: [mongoose.Schema.Types.ObjectId],

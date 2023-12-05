@@ -13,25 +13,11 @@ import config from "../config/googleCloudStorage";
 
 export const createOrder = async (req: Request, res: Response) => {
   try {
-    const {
-      customerId,
-      number,
-      email,
-      fullName,
-      address,
-      quantity,
-      cart,
-    } = req.body;
+    
 
-    const newOrder = new Order({
-      customerId,
-      number,
-      email,
-      fullName,
-      address,
-      quantity,
-      cart,
-    });
+    const newOrder = new Order(
+      req.body
+    );
     newOrder.save();
     res.status(201).json(newOrder);
   } catch {

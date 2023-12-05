@@ -26,6 +26,15 @@ router.get('/all', async (req: Request, res: Response) => {
   }
 })
 
+// confirm order 
+router.post('/confirm/:id', async (req: Request, res: Response) => {
+  try {
+    const order = await Order.findByIdAndUpdate(req.params.id, { state: "confirmed" }, { new: true });
+    return res.status(200).json(order);
+  } catch (err) {
+    return res.status(500).json({ message: err });
+  }
+})
 // Process order 
 // Create an order
 
