@@ -33,6 +33,10 @@ const customSheet = new mongoose.Schema({
 
 
 const orderSchema = new mongoose.Schema({
+  price:{
+    type: Number,
+    required: true
+  },
   customerId: {
     type: String,
     required: true
@@ -60,7 +64,7 @@ const orderSchema = new mongoose.Schema({
   },
   state: {
     type: String,
-    enum: ["pending","confirmed","printed","packed", "delivered", "canceled"],
+    enum: ["pending","confirmed","ready","printed","packed", "delivered", "canceled"],
     default: "pending",
   },
   cart:{

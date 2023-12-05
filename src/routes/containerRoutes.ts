@@ -31,29 +31,40 @@ router.get('/containers',async (req, res) => {
 
 
 router.post('/add-to-container', async (req, res) => {
-    const currentContainer = await Container.findOne({ state: "filling" });
-    const {id} = req.body
-
-    if(currentContainer){
-        await Container.findByIdAndUpdate(currentContainer._id, {$inc: { sheets: 1 }, $push: { sheetsIds: id } });
-        if(currentContainer.sheetsIds.length == 3){
-            await Container.findByIdAndUpdate(currentContainer._id, {state: "ready"});
-            for(const _id of currentContainer.sheetsIds){
-                await OrderItem.findByIdAndUpdate(_id, {state: "ready"})
+    try {
+        
+            const currentContainer = await Container.findOne({ state: "filling" });
+            const {id} = req.body
+            const orderItem = await OrderItem.findById(id)
+            if(orderItem?.type === "cup" || orderItem?.type === "t-shirt"){
+                await OrderItem.findByIdAndUpdate(id, { state: "ready" })
+                return res.status(200).json(null)
+            }else{
+                if(currentContainer){
+                    await Container.findByIdAndUpdate(currentContainer._id, {$inc: { sheets: 1 }, $push: { sheetsIds: id } });
+                    if(currentContainer.sheetsIds.length == 3){
+                        await Container.findByIdAndUpdate(currentContainer._id, {state: "ready"});
+                        for(const _id of currentContainer.sheetsIds){
+                            await OrderItem.findByIdAndUpdate(_id, {state: "ready"})
+                        }
+                        await OrderItem.findByIdAndUpdate(id, {container: currentContainer._id, state: "ready"})
+                    }else{
+                        await OrderItem.findByIdAndUpdate(id, {container: currentContainer._id, state: "inContainer"})
+                    }
+                    return res.status(200).json(currentContainer)
+                }else{
+                    const newContainer = new Container({
+                        sheets: 1,
+                        sheetsIds: [id]
+                    });
+                    await newContainer.save();
+                    await OrderItem.findByIdAndUpdate(id, {container: newContainer._id, state: "inContainer"})
+                    return res.status(200).json(newContainer)
+                }
             }
-            await OrderItem.findByIdAndUpdate(id, {container: currentContainer._id, state: "ready"})
-        }else{
-            await OrderItem.findByIdAndUpdate(id, {container: currentContainer._id, state: "inContainer"})
-        }
-        return res.status(200).json(currentContainer)
-    }else{
-        const newContainer = new Container({
-            sheets: 1,
-            sheetsIds: [id]
-        });
-        await newContainer.save();
-        await OrderItem.findByIdAndUpdate(id, {container: newContainer._id, state: "inContainer"})
-        return res.status(200).json(newContainer)
+
+    } catch (error) {
+        console.log(error)
     }
 
 })
