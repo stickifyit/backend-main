@@ -5,7 +5,7 @@ import mongoose from "mongoose"
 
 
 const stickerSheetSchema = new mongoose.Schema({
-    container: { type: mongoose.Schema.Types.ObjectId, required: true},
+    container: { type: mongoose.Schema.Types.ObjectId},
     data:{
         sheetId : { type: String, required: true},
     }
@@ -14,7 +14,7 @@ const stickerSheetSchema = new mongoose.Schema({
 
 
 const customSheetSchema = new mongoose.Schema({
-    container : { type: mongoose.Schema.Types.ObjectId, required: true},
+    container : { type: mongoose.Schema.Types.ObjectId},
     data:{
         items:{
             type: [{

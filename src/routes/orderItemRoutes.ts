@@ -9,38 +9,47 @@ const router = express.Router()
 router.post('/create', async (req: Request, res: Response) => {
   try {
     if (req.body.type == "sticker-sheet" || req.body.type == "custom-sheet") {
-            const currentContainer = await Container.findOne({ state: "filling" });
-            // if the is a container that is not ready
-            if (currentContainer) {
-                  const orderItem = new OrderItem(req.body);
-                  if (req.body.type == "sticker-sheet" && orderItem.stickerSheetSchema) {
-                    orderItem.stickerSheetSchema.container = currentContainer._id;
-                  } else if (req.body.type == "custom-sheet" && orderItem.customSheetSchema) {
-                    orderItem.customSheetSchema.container = currentContainer._id;
-                  }
-                  await Container.findByIdAndUpdate(currentContainer._id, {$inc: { sheets: 1 }, $push: { sheetsIds: orderItem._id } });
-                  if(currentContainer.sheetsIds.length == 3){
-                    await Container.findByIdAndUpdate(currentContainer._id, {state: "ready"});
-                  }
-                  // i want to push the id of the sheet to the container
-                  await orderItem.save();
-                  res.status(201).json(orderItem);
-              // if there is no container that is not ready
-            }else{
-                  const newContainer = new Container();
-                  const orderItem = new OrderItem(req.body);
-                  if (req.body.type == "sticker-sheet" && orderItem.stickerSheetSchema) {
-                    orderItem.stickerSheetSchema.container = newContainer._id;
-                  } else if (req.body.type == "custom-sheet" && orderItem.customSheetSchema) {
-                    orderItem.customSheetSchema.container = newContainer._id;
-                  }
-                  // Container.findByIdAndUpdate(newContainer._id, {$inc: { sheets: 1 }, $push: { sheetsIds: orderItem._id } });
-                  newContainer.sheets = 1;
-                  newContainer.sheetsIds = [orderItem._id];
-                  await newContainer.save();
-                  await orderItem.save();
-                  res.status(201).json(orderItem);
-            }
+
+            // this code bellow make the sheet in the container 
+
+            // const currentContainer = await Container.findOne({ state: "filling" });
+            // // if the is a container that is not ready
+            // if (currentContainer) {
+            //       const orderItem = new OrderItem(req.body);
+            //       if (req.body.type == "sticker-sheet" && orderItem.stickerSheetSchema) {
+            //         orderItem.stickerSheetSchema.container = currentContainer._id;
+            //       } else if (req.body.type == "custom-sheet" && orderItem.customSheetSchema) {
+            //         orderItem.customSheetSchema.container = currentContainer._id;
+            //       }
+            //       await Container.findByIdAndUpdate(currentContainer._id, {$inc: { sheets: 1 }, $push: { sheetsIds: orderItem._id } });
+            //       if(currentContainer.sheetsIds.length == 3){
+            //         await Container.findByIdAndUpdate(currentContainer._id, {state: "ready"});
+            //       }
+            //       // i want to push the id of the sheet to the container
+            //       await orderItem.save();
+            //       res.status(201).json(orderItem);
+            //   // if there is no container that is not ready
+            // }else{
+            //       const newContainer = new Container();
+            //       const orderItem = new OrderItem(req.body);
+            //       if (req.body.type == "sticker-sheet" && orderItem.stickerSheetSchema) {
+            //         orderItem.stickerSheetSchema.container = newContainer._id;
+            //       } else if (req.body.type == "custom-sheet" && orderItem.customSheetSchema) {
+            //         orderItem.customSheetSchema.container = newContainer._id;
+            //       }
+            //       // Container.findByIdAndUpdate(newContainer._id, {$inc: { sheets: 1 }, $push: { sheetsIds: orderItem._id } });
+            //       newContainer.sheets = 1;
+            //       newContainer.sheetsIds = [orderItem._id];
+            //       await newContainer.save();
+            //       await orderItem.save();
+            //       res.status(201).json(orderItem);
+            // }
+
+              const orderItem = new OrderItem(req.body);
+              await orderItem.save();
+              res.status(201).json(orderItem);
+
+
     }else{
               const orderItem = new OrderItem(req.body);
               await orderItem.save();

@@ -9,7 +9,7 @@ import * as path from "path"
 import * as os from 'os';
 import Sheet from '../models/sheetSchema';
 import Container from '../models/containerSchema';
-import { Document } from 'mongoose';
+import {  Document } from 'mongoose';
 import { io } from '../app';
 import { createOrder } from '../controllers/processOrderController';
 const router: Router = express.Router();
@@ -19,7 +19,7 @@ const router: Router = express.Router();
 // get orders 
 router.get('/all', async (req: Request, res: Response) => {
   try {
-    const orders = await Order.find().sort({ createdAt: -1 }).limit(12);
+    const orders = await Order.find().populate("cart").sort({ createdAt: -1 }).limit(12);
     return res.status(200).json(orders);
   } catch (err) {
     return res.status(500).json({ message: err });
@@ -28,7 +28,18 @@ router.get('/all', async (req: Request, res: Response) => {
 
 // Process order 
 // Create an order
+
 router.post("/create",createOrder)
+router.put("/update/:id", async (req: Request, res: Response) => {
+  try {
+    const order = await Order.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    return res.status(200).json(order);
+  } catch (err) {
+    return res.status(500).json({ message: err });
+  }
+})
 
 
   export default router;

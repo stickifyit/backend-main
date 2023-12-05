@@ -20,7 +20,8 @@ router.get('/current',async (req, res) => {
 router.get('/containers',async (req, res) => {
     try{
         // get top 10
-        const containers = await Container.find({isOpen: 'closed'}).sort({createdAt: -1}).limit(10)
+        // get all the container with state != "filling"
+        const containers = await Container.find({state: {'$ne': 'filling'}}).sort({createdAt: -1}).limit(10)
         return res.status(200).json(containers)
     }catch(err){
         return res.status(500).json({message: err})

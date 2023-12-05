@@ -64,7 +64,8 @@ const orderSchema = new mongoose.Schema({
     default: "new",
   },
   cart:{
-    type: [customSheet],
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "OrderItem",
     required: false
   }
 }, {
