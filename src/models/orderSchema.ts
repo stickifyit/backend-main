@@ -54,7 +54,12 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: false
   },
-  fullName: {
+
+  firstName: {
+    type: String,
+    required: true
+  },
+  lastName: {
     type: String,
     required: true
   },
