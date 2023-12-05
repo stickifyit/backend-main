@@ -60,7 +60,7 @@ const tShirtSchema = new mongoose.Schema({
 
 
 const orderItemSchema = new mongoose.Schema({
-    state : { type: String, enum: ["new", "pending","printed"], default: "new", required: false},
+    state : { type: String, enum: ["pending","inContainer","ready","printed"], default: "pending", required: false},
     orderId: { type: String, required: true},
     image : { type: String, required: true},
     type: { type: String, required: true ,enum: ["sticker-sheet","custom-sheet", "t-shirt", "cup"]},
