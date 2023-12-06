@@ -13,6 +13,7 @@ router.post('/create', (req: Request, res: Response) => {
             description: req.body?.description,
         })
         newStickerSheet.save()
+        res.status(201).json(newStickerSheet)
     } catch (error) {
         console.log(error)
     }
