@@ -50,5 +50,57 @@ router.put("/update/:id", async (req: Request, res: Response) => {
   }
 })
 
+/// get status of order
+router.get("/dashboard", async (req: Request, res: Response) => {
+  try {
+    // count orders last week
+    const orders = (await Order.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: new Date(new Date().setDate(new Date().getDate() - 7)),
+          },
+        },
+      }
+    ])).length
+    // get price of total orders delevered last week
+    const confirmed = await Order.aggregate([
+      {
+        $match: {
+          state: "confirmed",
+          createdAt: {
+            $gte: new Date(new Date().setDate(new Date().getDate() - 7)),
+          },
+        },
+      }
+    ])
+     //  total price from confirmed orders
+
+     const totalPrice = confirmed.reduce((total, order) => {
+        return total + order.price;
+     },0)
+
+
+     // total delivered orders
+    //  const delivered = (await Order.find({state:"delivered"})).length
+
+     // total delivered orders for last week
+    const delivered = (await Order.aggregate([
+      {
+        $match: {
+          state: "delivered",
+          createdAt: {
+            $gte: new Date(new Date().setDate(new Date().getDate() - 7)),
+          },
+        },
+      }
+    ])).length
+
+
+    return res.status(200).json({orders,totalPrice,delivered,confirmed:confirmed.length});
+  } catch (err) {
+    return res.status(500).json({ message: err });
+  } 
+})
 
   export default router;
