@@ -4,6 +4,8 @@
   "description": "the main backend for sticky system",
   "main": "server.js",
   "scripts": {
+    "build":"npx tsc",
+    "start":"node dist/server.js",
     "start:watch": "tsc --watch",
     "start:dev": "nodemon dist/server.js"
   },
