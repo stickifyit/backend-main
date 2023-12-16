@@ -14,7 +14,7 @@ import packRoutes from './routes/packRoutes'
 import customSheetRoutes from './routes/customSheetroutes'
 import stickerSheetRoutes from './routes/stickerSheetRoutes'
 import orderItemRoutes from './routes/orderItemRoutes'
-
+import contactRoutes from './routes/contactRoutes'
 
 
 import http from "http";
@@ -68,6 +68,7 @@ app.use('/packs', packRoutes);
 app.use('/custom-sheet',customSheetRoutes);
 app.use("/sticker-sheet",stickerSheetRoutes)
 app.use('/order-items',orderItemRoutes)
+app.use('/contacts',contactRoutes)
 
 
 
