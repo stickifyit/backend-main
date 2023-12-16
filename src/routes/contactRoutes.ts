@@ -7,6 +7,7 @@ const router: Router = express.Router();
 // make new contact message
 
 router.post('/create', async (req: Request, res: Response) => {
+    console.log(req.body)
     try{
         const newContact = new Contact({
             firstName: req.body.firstName,

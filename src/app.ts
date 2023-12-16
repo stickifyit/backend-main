@@ -68,7 +68,7 @@ app.use('/packs', packRoutes);
 app.use('/custom-sheet',customSheetRoutes);
 app.use("/sticker-sheet",stickerSheetRoutes)
 app.use('/order-items',orderItemRoutes)
-app.use('/contacts',contactRoutes)
+app.use('/contact',contactRoutes)
 
 
 
